@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinBag.Android", "CoinBag\CoinBag.Android\CoinBag.Android.csproj", "{585B7900-B253-49B6-BC89-055F2D169DBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinBag.Android", "src\CoinBag.Android\CoinBag.Android.csproj", "{585B7900-B253-49B6-BC89-055F2D169DBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinBag", "CoinBag\CoinBag\CoinBag.csproj", "{14341AF3-E001-4B95-B706-C62F70059E4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinBag", "src\CoinBag\CoinBag.csproj", "{14341AF3-E001-4B95-B706-C62F70059E4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinBag.iOS", "CoinBag\CoinBag.iOS\CoinBag.iOS.csproj", "{8D80F45F-3854-4240-B49A-FEF2E5E9EC48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinBag.iOS", "src\CoinBag.iOS\CoinBag.iOS.csproj", "{8D80F45F-3854-4240-B49A-FEF2E5E9EC48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
