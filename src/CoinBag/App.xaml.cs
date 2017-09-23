@@ -9,11 +9,11 @@ namespace CoinBag
 {
     public partial class App : Application
     {
-        public App()
+        public App(GlobalSetup setup)
         {
             InitializeComponent();
-
-            MainPage = new MainView();
+            DependencyContainer.Container = setup.CreateContainer();
+            MainPage = new NavigationPage(new MainView());
         }
 
         protected override void OnStart()

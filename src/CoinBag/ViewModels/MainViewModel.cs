@@ -8,5 +8,9 @@ namespace CoinBag.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        public MainViewModel()
+        {
+            Title = "Coin bag";
+        }
     }
 }

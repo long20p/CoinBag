@@ -9,5 +9,12 @@ namespace CoinBag.ViewModels
 {
     public class ViewModelBase : ObservableObject
     {
+        private string title;
+        public string Title
+        {
+            get { return title; }
+            set { SetProperty(ref title, value); }
+        }
+
     }
 }
