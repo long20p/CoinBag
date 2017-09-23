@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 namespace CoinBag
 {
     public class GlobalSetup
     {
-        public IContainer CreateContainer()
+        public IServiceProvider CreateServiceProvider()
         {
             var builder = new ContainerBuilder();
             RegisterDependencies(builder);
-            return builder.Build();
+            var container = builder.Build();
+            return new AutofacServiceProvider(container);
         }
 
         public virtual void RegisterDependencies(ContainerBuilder builder)

@@ -14,7 +14,7 @@ namespace CoinBag.Views
         public MainView()
         {
             InitializeComponent();
-            BindingContext = DependencyService.Get<MainViewModel>();
+            BindingContext = DI.ServiceProvider.GetService(typeof(MainViewModel));
         }
     }
 }

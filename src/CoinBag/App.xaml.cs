@@ -12,7 +12,7 @@ namespace CoinBag
         public App(GlobalSetup setup)
         {
             InitializeComponent();
-            DependencyContainer.Container = setup.CreateContainer();
+            DI.ServiceProvider = setup.CreateServiceProvider();
             MainPage = new NavigationPage(new MainView());
         }
 
