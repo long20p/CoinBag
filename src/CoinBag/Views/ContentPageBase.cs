@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CoinBag.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using Xamarin.Forms;
 
 namespace CoinBag.Views
@@ -10,7 +11,18 @@ namespace CoinBag.Views
     {
         protected ContentPageBase()
         {
-            BindingContext = DependencyService.Get<T>();
+            try
+            {
+                ViewModel = DI.ServiceProvider.GetService<T>();
+                BindingContext = ViewModel;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
+
+        public T ViewModel { get; set; }
     }
 }

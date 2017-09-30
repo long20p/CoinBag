@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace CoinBag.Models
 {
-    public class Wallet
+    public class Wallet : IdentifiableEntity
     {
+	    public string Name { get; set; }
+	    public DateTime Created { get; set; }
+		public string EncodedMnemonic { get; set; }
+	    public Address Master { get; set; }
+	    public IEnumerable<Address> CurrentAddresses { get; set; }
     }
 }

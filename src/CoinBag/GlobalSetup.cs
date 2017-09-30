@@ -21,6 +21,8 @@ namespace CoinBag
         {
             builder.RegisterAssemblyTypes(typeof(App).GetTypeInfo().Assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"));
+	        builder.RegisterAssemblyTypes(typeof(App).GetTypeInfo().Assembly)
+		        .Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().SingleInstance();
         }
     }
 }

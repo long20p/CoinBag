@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Autofac;
+using CoinBag.Droid.Services;
+using CoinBag.Services;
 
 namespace CoinBag.Droid
 {
@@ -18,6 +20,7 @@ namespace CoinBag.Droid
         public override void RegisterDependencies(ContainerBuilder builder)
         {
             base.RegisterDependencies(builder);
+	        builder.RegisterType<AndroidFileService>().As<IFileService>().SingleInstance();
         }
     }
 }

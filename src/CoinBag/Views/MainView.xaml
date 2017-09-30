@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<views:MainViewPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:CoinBag.Views"
              Title="{Binding Title}"
              x:Class="CoinBag.Views.MainView">
-    <ContentPage.Content>
+    <views:MainViewPage.Content>
         <StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Balance" />
@@ -27,5 +28,5 @@
                 <Button Text="Send coin" HorizontalOptions="StartAndExpand" />
             </StackLayout>
         </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </views:MainViewPage.Content>
+</views:MainViewPage>
