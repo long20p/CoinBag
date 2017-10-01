@@ -11,16 +11,8 @@ namespace CoinBag.Views
     {
         protected ContentPageBase()
         {
-            try
-            {
-                ViewModel = DI.ServiceProvider.GetService<T>();
-                BindingContext = ViewModel;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            ViewModel = DI.ServiceProvider.GetService<T>();
+            BindingContext = ViewModel;
         }
 
         public T ViewModel { get; set; }

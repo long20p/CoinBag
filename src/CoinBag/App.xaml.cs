@@ -13,7 +13,7 @@ namespace CoinBag
         {
             InitializeComponent();
             DI.ServiceProvider = setup.CreateServiceProvider();
-            MainPage = new NavigationPage(new MainView());
+            MainPage = new RootPage();
         }
 
         protected override void OnStart()

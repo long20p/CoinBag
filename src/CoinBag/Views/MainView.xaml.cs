@@ -17,24 +17,13 @@ namespace CoinBag.Views
         public MainView()
         {
             InitializeComponent();
-            
-        }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
             MessagingCenter.Subscribe<SplashView, Wallet>(this, Messages.InitializationCompleted, async (sender, wallet) =>
             {
-	            ViewModel.CurrentWallet = wallet;
+                ViewModel.CurrentWallet = wallet;
                 await Navigation.PopModalAsync();
+                MessagingCenter.Unsubscribe<SplashView, Wallet>(this, Messages.InitializationCompleted);
             });
-            await Navigation.PushModalAsync(new SplashView());
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            MessagingCenter.Unsubscribe<SplashView>(this, Messages.InitializationCompleted);
+            Navigation.PushModalAsync(new SplashView());
         }
     }
 

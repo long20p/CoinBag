@@ -15,5 +15,12 @@ namespace CoinBag
 
 		//Settings
 	    public const NetworkType SupportedNetworkType = NetworkType.TestNet;
+
+        //Pages
+        public const string MainPage = "Overview";
+        public const string BackupWalletPage = "Backup Wallet";
+        public const string RestoreWalletPage = "Restore Wallet";
+        public const string SendCoinPage = "Send Coin";
+        public const string GetCoinPage = "Get Coin";
     }
 }
