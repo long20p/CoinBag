@@ -2,13 +2,24 @@
 <views:MainViewPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:CoinBag.Views"
+             xmlns:converters="clr-namespace:CoinBag.Converters"       
              Title="{Binding Title}"
              x:Class="CoinBag.Views.MainView">
+    <views:MainViewPage.Resources>
+        <ResourceDictionary>
+            <converters:TransactionDirectionToSignConverter x:Key="DirectionToSignConverter" />
+        </ResourceDictionary>
+    </views:MainViewPage.Resources>
     <views:MainViewPage.Content>
         <StackLayout>
             <StackLayout Orientation="Horizontal">
+                <Label Text="Current wallet:" />
+                <Label Text="{Binding CurrentWallet.Name}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
                 <Label Text="Balance" />
                 <Label Text="{Binding TotalBalance}" />
+                <Label Text="BTC" />
             </StackLayout>
             <Label Text="Recent transactions" />
             <ListView 
@@ -18,7 +29,14 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Label Text="{Binding Amount}" />
+                            <StackLayout>
+                                <Label Text="{Binding Address.PublicAddress}" />
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Direction, Converter={StaticResource DirectionToSignConverter}}" />
+                                    <Label Text="{Binding Amount}" />
+                                    <Label Text="BTC" />
+                                </StackLayout>
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

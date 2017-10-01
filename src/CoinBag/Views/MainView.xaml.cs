@@ -23,8 +23,9 @@ namespace CoinBag.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            MessagingCenter.Subscribe<SplashView>(this, Messages.InitializationCompleted, async (sender) =>
+            MessagingCenter.Subscribe<SplashView, Wallet>(this, Messages.InitializationCompleted, async (sender, wallet) =>
             {
+	            ViewModel.CurrentWallet = wallet;
                 await Navigation.PopModalAsync();
             });
             await Navigation.PushModalAsync(new SplashView());

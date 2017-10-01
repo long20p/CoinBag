@@ -24,7 +24,8 @@ namespace CoinBag.Services
 		    var key = mnemonic.DeriveExtKey(passphrase);
 	        var master = new Address
 	        {
-	            ExtPrivateKeyWif = key.ToString(Constants.SupportedNetworkType.GetNetwork())
+	            ExtPrivateKeyWif = key.ToString(Constants.SupportedNetworkType.GetNetwork()),
+				PublicAddress = key.PrivateKey.PubKey.GetAddress(Constants.SupportedNetworkType.GetNetwork()).ToString()
 	        };
 
 	        return new Wallet

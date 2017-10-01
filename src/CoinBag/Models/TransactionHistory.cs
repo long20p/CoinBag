@@ -10,6 +10,7 @@ namespace CoinBag.Models
         public Address Address { get; set; }
         public DateTime TransactionTime { get; set; }
 	    public string TransactionId { get; set; }
+		public decimal Amount { get; set; }
 	    public TransactionDirection Direction { get; set; }
     }
 }

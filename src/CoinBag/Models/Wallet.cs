@@ -8,6 +8,11 @@ namespace CoinBag.Models
 {
     public class Wallet : IdentifiableEntity
     {
+	    public Wallet()
+	    {
+		    CurrentAddresses = new List<Address>();
+	    }
+
 	    public string Name { get; set; }
 	    public DateTime Created { get; set; }
 		public string EncodedMnemonic { get; set; }

@@ -37,7 +37,7 @@ namespace CoinBag.Views
 				    $"Please write down the mnemonic of your new wallet: {currentWallet.EncodedMnemonic}", "OK");
 		    }
 
-            MessagingCenter.Send(this, Messages.InitializationCompleted);
+            MessagingCenter.Send(this, Messages.InitializationCompleted, currentWallet);
 	    }
 	}
 

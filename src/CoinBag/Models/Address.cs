@@ -7,6 +7,7 @@ namespace CoinBag.Models
     public class Address : IdentifiableEntity
     {
         public string ExtPrivateKeyWif { get; set; }
+		public string PublicAddress { get; set; }
         public string HDPath { get; set; }
     }
 }
