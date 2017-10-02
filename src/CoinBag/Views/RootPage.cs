@@ -19,29 +19,24 @@ namespace CoinBag.Views
 
         public void NavigateTo(string pageName)
         {
-            try
+            if (!Pages.ContainsKey(pageName))
             {
-                if (!Pages.ContainsKey(pageName))
+                switch (pageName)
                 {
-                    switch (pageName)
-                    {
-                        case Constants.MainPage:
-                            Pages.Add(pageName, new NavigationPage(new MainView()));
-                            break;
-                        case Constants.BackupWalletPage:
-                            Pages.Add(pageName, new NavigationPage(new BackupWalletView()));
-                            break;
-                    }
+                    case Constants.MainPage:
+                        Pages.Add(pageName, new NavigationPage(new MainView()));
+                        break;
+                    case Constants.BackupWalletPage:
+                        Pages.Add(pageName, new NavigationPage(new BackupWalletView()));
+                        break;
+                    case Constants.RestoreWalletPage:
+                        Pages.Add(pageName, new NavigationPage(new RestoreWalletView()));
+                        break;
                 }
+            }
 
-                Detail = Pages[pageName];
-                IsPresented = false;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            Detail = Pages[pageName];
+            IsPresented = false;
         }
     }
 }

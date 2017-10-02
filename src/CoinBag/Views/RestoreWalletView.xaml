@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:RestoreWalletViewPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:CoinBag.Views"
+             Title="{Binding Title}"                
+             x:Class="CoinBag.Views.RestoreWalletView">
+    <views:RestoreWalletViewPage.Content>
+        <StackLayout>
+            <Label Text="From file:" />
+            <Entry  />
+            <Button Text="Browse..." Command="{Binding BrowseFileCommand}" />
+        </StackLayout>
+    </views:RestoreWalletViewPage.Content>
+</views:RestoreWalletViewPage>

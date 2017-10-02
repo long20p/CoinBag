@@ -4,4 +4,7 @@
              xmlns:views="clr-namespace:CoinBag.Views"
              Title="{Binding Title}"
              x:Class="CoinBag.Views.BackupWalletView">
+    <views:BackupWalletViewPage.Content>
+        
+    </views:BackupWalletViewPage.Content>
 </views:BackupWalletViewPage>
