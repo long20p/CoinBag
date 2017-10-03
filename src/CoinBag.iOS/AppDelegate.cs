@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Adapt.Presentation.iOS;
 using Foundation;
 using UIKit;
 
@@ -23,7 +23,7 @@ namespace CoinBag.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App(new iOSGlobalSetup()));
+            LoadApplication(new App(new AppleGlobalSetup(), new PresentationFactory()));
 
             return base.FinishedLaunching(app, options);
         }

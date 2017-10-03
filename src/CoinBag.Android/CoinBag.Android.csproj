@@ -49,6 +49,12 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Adapt.Presentation.Android, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Adapt.Presentation.1.3.0\lib\MonoAndroid\Adapt.Presentation.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Adapt.Presentation.Standard, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Adapt.Presentation.1.3.0\lib\MonoAndroid\Adapt.Presentation.Standard.dll</HintPath>
+    </Reference>
     <Reference Include="Autofac, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autofac.4.0.0\lib\netstandard1.1\Autofac.dll</HintPath>
     </Reference>

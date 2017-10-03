@@ -8,7 +8,7 @@
         <StackLayout>
             <Label Text="From file:" />
             <Entry  />
-            <Button Text="Browse..." Command="{Binding BrowseFileCommand}" />
+            <Button x:Name="BrowseBtn"  Text="Browse..." Command="{Binding BrowseFileCommand}" />
         </StackLayout>
     </views:RestoreWalletViewPage.Content>
 </views:RestoreWalletViewPage>

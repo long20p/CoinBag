@@ -6,12 +6,12 @@ using CoinBag.iOS.Services;
 
 namespace CoinBag.iOS
 {
-    public class iOSGlobalSetup : GlobalSetup
+    public class AppleGlobalSetup : GlobalSetup
     {
         public override void RegisterDependencies(ContainerBuilder builder)
         {
             base.RegisterDependencies(builder);
-            builder.RegisterType<IOSFileService>().As<IOSFileService>().SingleInstance();
+            builder.RegisterType<AppleFileService>().As<AppleFileService>().SingleInstance();
         }
     }
 }

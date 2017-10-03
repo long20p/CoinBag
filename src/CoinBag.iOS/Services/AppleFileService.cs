@@ -9,7 +9,7 @@ using UIKit;
 
 namespace CoinBag.iOS.Services
 {
-    public class IOSFileService : IFileService
+    public class AppleFileService : IFileService
     {
         public async Task SaveTextFile(string filePath, string content, bool overwrite = true)
         {
