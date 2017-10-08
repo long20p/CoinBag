@@ -10,6 +10,7 @@ namespace CoinBag.Services
     {
 	    Wallet CreateNew(string passphrase = null);
 	    Task<Wallet> GetWallet(Guid walletId);
+        Task<Wallet> GetCurrentWallet();
 	    Task SaveWallet(Wallet wallet);
     }
 }

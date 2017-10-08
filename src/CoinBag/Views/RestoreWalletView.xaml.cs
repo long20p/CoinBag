@@ -17,23 +17,7 @@ namespace CoinBag.Views
 		public RestoreWalletView ()
 		{
 			InitializeComponent ();
-            BrowseBtn.Clicked += BrowseBtn_Clicked;
 		}
-
-        private async void BrowseBtn_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var filePicker = App.PresentationFactory.CreateFilePicker();
-                var fileData = await filePicker.PickAndOpenFileForReading();
-                //var s = fileData.FileName;
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw;
-            }
-        }
     }
 
     public class RestoreWalletViewPage : ContentPageBase<RestoreWalletViewModel> { }

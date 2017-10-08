@@ -5,6 +5,8 @@
              Title="{Binding Title}"
              x:Class="CoinBag.Views.BackupWalletView">
     <views:BackupWalletViewPage.Content>
-        
+        <StackLayout>
+            <Button Text="Backup" Command="{Binding BackupCommand}" />
+        </StackLayout>
     </views:BackupWalletViewPage.Content>
 </views:BackupWalletViewPage>

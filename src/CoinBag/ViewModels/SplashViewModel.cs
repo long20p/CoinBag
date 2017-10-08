@@ -28,12 +28,7 @@ namespace CoinBag.ViewModels
 
         public async Task<Wallet> LoadWallet()
         {
-	        var setting = await settingService.GetSetting();
-	        if (setting?.CurrentWalletId == null)
-	        {
-		        return null;
-	        }
-	        return await walletService.GetWallet(setting.CurrentWalletId.Value);
+            return await walletService.GetCurrentWallet();
         }
 
 	    public async Task<Wallet> CreateNewWallet(bool makeDefault = false)

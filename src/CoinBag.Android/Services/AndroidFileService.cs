@@ -53,5 +53,12 @@ namespace CoinBag.Droid.Services
 			}
 			return await Task.FromResult(File.ReadAllText(fullPath));
 		}
+
+	    public async Task SaveToDownloads(string fileName, byte[] content)
+	    {
+	        var fullPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath,
+	            Android.OS.Environment.DirectoryDownloads, fileName);
+            File.WriteAllBytes(fullPath, content);
+	    }
 	}
 }

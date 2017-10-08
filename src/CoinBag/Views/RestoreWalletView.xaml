@@ -7,8 +7,11 @@
     <views:RestoreWalletViewPage.Content>
         <StackLayout>
             <Label Text="From file:" />
-            <Entry  />
-            <Button x:Name="BrowseBtn"  Text="Browse..." Command="{Binding BrowseFileCommand}" />
+            <StackLayout Orientation="Horizontal">
+                <Entry HorizontalOptions="FillAndExpand" Text="{Binding SelectedFilePath}" />
+                <Button Text="Browse..." Command="{Binding BrowseFileCommand}" />
+            </StackLayout>
+            <Button Text="Restore" Command="{Binding RestoreWalletCommand}" />
         </StackLayout>
     </views:RestoreWalletViewPage.Content>
 </views:RestoreWalletViewPage>

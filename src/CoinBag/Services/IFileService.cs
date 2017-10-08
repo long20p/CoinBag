@@ -9,5 +9,6 @@ namespace CoinBag.Services
     {
 	    Task SaveTextFile(string filePath, string content, bool overwrite = true);
 	    Task<string> LoadTextFile(string filePath);
-	}
+        Task SaveToDownloads(string fileName, byte[] content);
+    }
 }

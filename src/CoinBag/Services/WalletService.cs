@@ -12,10 +12,12 @@ namespace CoinBag.Services
     public class WalletService : IWalletService
     {
 	    private readonly IPersistenceService persistenceService;
+        private readonly ISettingService settingService;
 
-	    public WalletService(IPersistenceService persistenceService)
+	    public WalletService(IPersistenceService persistenceService, ISettingService settingService)
 	    {
-		    this.persistenceService = persistenceService;
+	        this.persistenceService = persistenceService;
+	        this.settingService = settingService;
 	    }
 
 	    public Wallet CreateNew(string passphrase = null)
@@ -43,7 +45,17 @@ namespace CoinBag.Services
 		    return await persistenceService.LoadObject<Wallet>(Path.Combine(Constants.WalletFolder, walletId.ToString()));
 	    }
 
-	    public async Task SaveWallet(Wallet wallet)
+        public async Task<Wallet> GetCurrentWallet()
+        {
+            var setting = await settingService.GetSetting();
+            if (setting?.CurrentWalletId == null)
+            {
+                return null;
+            }
+            return await GetWallet(setting.CurrentWalletId.Value);
+        }
+
+        public async Task SaveWallet(Wallet wallet)
 	    {
 		    await persistenceService.SaveObject(wallet, Path.Combine(Constants.WalletFolder, wallet.Id.ToString()));
 	    }
