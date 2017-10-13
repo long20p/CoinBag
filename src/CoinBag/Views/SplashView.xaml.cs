@@ -34,7 +34,7 @@ namespace CoinBag.Views
 			    await DisplayAlert("Creating new wallet", "No default wallet found. A new wallet will be created.", "OK");
 			    currentWallet = await ViewModel.CreateNewWallet(true);
 			    await DisplayAlert("New wallet created",
-				    $"Please write down the mnemonic of your new wallet: {currentWallet.EncodedMnemonic}", "OK");
+				    $"Please write down the mnemonic of your new wallet:{Environment.NewLine}{currentWallet.EncodedMnemonic}", "OK");
 		    }
 
             MessagingCenter.Send(this, Messages.InitializationCompleted, currentWallet);

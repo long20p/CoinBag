@@ -16,11 +16,13 @@ namespace CoinBag.ViewModels
     {
         private ISettingService settingService;
         private IWalletService walletService;
+        private INotificationService notificationService;
 
-        public RestoreWalletViewModel(IWalletService walletService, ISettingService settingService)
+        public RestoreWalletViewModel(IWalletService walletService, ISettingService settingService, INotificationService notificationService)
         {
             this.walletService = walletService;
             this.settingService = settingService;
+            this.notificationService = notificationService;
             Title = "Restore Wallet";
             BrowseFileCommand = new Command(async ()=> await BrowseFileCommandExecute());
             RestoreWalletCommand = new Command(async ()=> await RestoreWalletCommandExecute());
@@ -68,7 +70,7 @@ namespace CoinBag.ViewModels
                 await settingService.SaveSetting(setting);
             }
 
-            //TODO: notification
+            notificationService.ShowInfo("Wallet was restored successfully");
         }
     }
 }

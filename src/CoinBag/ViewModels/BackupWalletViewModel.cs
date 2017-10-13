@@ -14,11 +14,13 @@ namespace CoinBag.ViewModels
     {
         private IWalletService walletService;
         private IFileService fileService;
+        private INotificationService notificationService;
 
-        public BackupWalletViewModel(IWalletService walletService, IFileService fileService)
+        public BackupWalletViewModel(IWalletService walletService, IFileService fileService, INotificationService notificationService)
         {
             this.walletService = walletService;
             this.fileService = fileService;
+            this.notificationService = notificationService;
             Title = "Backup Wallet";
             BackupCommand = new Command(async () => await BackupCommandExecute());
         }
@@ -36,7 +38,7 @@ namespace CoinBag.ViewModels
                 await fileService.SaveToDownloads(fileName, memStream.ToArray());
             }
 
-            //TODO: notification
+            notificationService.ShowInfo("Wallet was backed up successfully");
         }
     }
 }
