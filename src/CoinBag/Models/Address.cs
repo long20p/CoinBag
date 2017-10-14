@@ -9,5 +9,6 @@ namespace CoinBag.Models
         public string ExtPrivateKeyWif { get; set; }
 		public string PublicAddress { get; set; }
         public string HDPath { get; set; }
+        public bool HasHistory { get; set; }
     }
 }

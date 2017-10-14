@@ -13,6 +13,7 @@ namespace CoinBag.Views
         {
             ViewModel = DI.ServiceProvider.GetService<T>();
             BindingContext = ViewModel;
+            Title = ViewModel.Title;
         }
 
         public T ViewModel { get; set; }

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:ReceiveCoinViewPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:CoinBag.Views"
+             x:Class="CoinBag.Views.ReceiveCoinView">
+    <views:ReceiveCoinViewPage.Content>
+        <StackLayout>
+            <Label Text="Send coin to this address:" />
+            <Label Text="{Binding ReceivingAddress}" />
+        </StackLayout>
+    </views:ReceiveCoinViewPage.Content>
+</views:ReceiveCoinViewPage>

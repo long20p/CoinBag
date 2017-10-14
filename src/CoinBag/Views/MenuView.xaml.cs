@@ -19,7 +19,7 @@ namespace CoinBag.Views
 		{
 			InitializeComponent ();
 		    this.root = root;
-		    MenuListView.ItemsSource = menuItems = new List<MenuItem>
+		    CoinBagMenuListView.ItemsSource = menuItems = new List<MenuItem>
 		    {
                 new MenuItem{PageName = Constants.MainPage},
                 new MenuItem{PageName = Constants.BackupWalletPage},
@@ -28,8 +28,8 @@ namespace CoinBag.Views
                 new MenuItem{PageName = Constants.GetCoinPage}
 		    };
 
-		    MenuListView.SelectedItem = menuItems[0];
-		    MenuListView.ItemSelected += (sender, args) =>
+		    CoinBagMenuListView.SelectedItem = menuItems[0];
+		    CoinBagMenuListView.ItemSelected += (sender, args) =>
 		    {
                 root.NavigateTo((args.SelectedItem as MenuItem).PageName);
 		    };

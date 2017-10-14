@@ -8,15 +8,10 @@ namespace CoinBag.Models
 {
     public class Wallet : IdentifiableEntity
     {
-	    public Wallet()
-	    {
-		    CurrentAddresses = new List<Address>();
-	    }
-
 	    public string Name { get; set; }
 	    public DateTime Created { get; set; }
 		public string EncodedMnemonic { get; set; }
 	    public Address Master { get; set; }
-	    public IEnumerable<Address> CurrentAddresses { get; set; }
+	    public List<Address> CurrentAddresses { get; set; } = new List<Address>();
     }
 }

@@ -32,6 +32,12 @@ namespace CoinBag.Views
                     case Constants.RestoreWalletPage:
                         Pages.Add(pageName, new NavigationPage(new RestoreWalletView()));
                         break;
+                    case Constants.SendCoinPage:
+                        Pages.Add(pageName, new NavigationPage(new SendCoinView()));
+                        break;
+                    case Constants.GetCoinPage:
+                        Pages.Add(pageName, new NavigationPage(new ReceiveCoinView()));
+                        break;
                 }
             }
 
