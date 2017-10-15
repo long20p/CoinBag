@@ -2,11 +2,34 @@
 <views:ReceiveCoinViewPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:CoinBag.Views"
+             xmlns:converters="clr-namespace:CoinBag.Converters"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:zxingcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
              x:Class="CoinBag.Views.ReceiveCoinView">
+    <views:ReceiveCoinViewPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="BytesToImageConverter" />
+        </ResourceDictionary>
+    </views:ReceiveCoinViewPage.Resources>
     <views:ReceiveCoinViewPage.Content>
         <StackLayout>
-            <Label Text="Send coin to this address:" />
-            <Label Text="{Binding ReceivingAddress}" />
+            <Label HorizontalOptions="Center" Text="Scan the QR code for the receiving address:" />
+            <zxing:ZXingBarcodeImageView
+                BarcodeFormat="QR_CODE"
+                BarcodeValue="{Binding ReceivingAddress}"
+                HorizontalOptions="Fill"
+                VerticalOptions="Fill"
+                WidthRequest="200"
+                HeightRequest="200">
+                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    <zxingcm:EncodingOptions Width="200" Height="200" />
+                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+            </zxing:ZXingBarcodeImageView>
+            <Label HorizontalOptions="Center" Text="or copy the address directly:" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+                <Entry InputTransparent="true" HorizontalOptions="FillAndExpand" Text="{Binding ReceivingAddress}" />
+                <Button Text="Copy" />
+            </StackLayout>
         </StackLayout>
     </views:ReceiveCoinViewPage.Content>
 </views:ReceiveCoinViewPage>

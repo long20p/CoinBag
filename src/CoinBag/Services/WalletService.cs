@@ -84,7 +84,7 @@ namespace CoinBag.Services
                 unusedAddress = new Address
                 {
                     ExtPrivateKeyWif = derivedKey.ToString(Constants.SupportedNetworkType.GetNetwork()),
-                    PublicAddress = derivedKey.Neuter().ToString(Constants.SupportedNetworkType.GetNetwork()),
+                    PublicAddress = derivedKey.Neuter().PubKey.ToString(Constants.SupportedNetworkType.GetNetwork()),
                     HDPath = ""
                 };
                 wallet.CurrentAddresses.Add(unusedAddress);

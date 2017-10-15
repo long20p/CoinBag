@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using ZXing.Mobile;
 
 namespace CoinBag.Droid
 {
@@ -20,6 +21,8 @@ namespace CoinBag.Droid
             base.OnCreate(bundle);
             
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
+            MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App(new AndroidGlobalSetup(), new PresentationFactory(ApplicationContext, new Permissions(this))));
         }
 
@@ -29,6 +32,7 @@ namespace CoinBag.Droid
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             PermissionsRequestCompleted?.Invoke(requestCode, permissions, grantResults);
+            ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
