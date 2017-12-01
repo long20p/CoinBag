@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CoinBag.Helpers;
 using CoinBag.Models;
 using NBitcoin;
+using NBitcoin.SPV;
 
 namespace CoinBag.Services
 {
@@ -14,7 +15,7 @@ namespace CoinBag.Services
     {
 	    private readonly IPersistenceService persistenceService;
         private readonly ISettingService settingService;
-	    private Wallet currentWallet;
+	    private WalletHandler _currentWalletHandler;
 
 	    public WalletService(IPersistenceService persistenceService, ISettingService settingService)
 	    {
@@ -22,75 +23,88 @@ namespace CoinBag.Services
 	        this.settingService = settingService;
 	    }
 
-	    public Wallet CreateNew(string passphrase = null)
+	    public WalletHandler CreateNew(string name, string passphrase = null)
 	    {
+	        var walletId = Guid.NewGuid();
 		    var mnemonic = new Mnemonic(Wordlist.English, WordCount.TwentyFour);
 		    var key = mnemonic.DeriveExtKey(passphrase);
-	        var master = new Address
+	        var privKey = key.GetWif(Constants.CurrentNetwork);
+	        var pubKey = key.Neuter().GetWif(Constants.CurrentNetwork);
+	        var walletCreation = new WalletCreation
 	        {
-	            ExtPrivateKeyWif = key.ToString(Constants.SupportedNetworkType.GetNetwork()),
-				PublicAddress = key.PrivateKey.PubKey.GetAddress(Constants.SupportedNetworkType.GetNetwork()).ToString()
+                Name = walletId.ToString(),
+	            Network = Constants.CurrentNetwork,
+	            RootKeys = new[] {pubKey.ExtPubKey}
 	        };
 
-	        return new Wallet
+	        return new WalletHandler
 	        {
-				Id =Guid.NewGuid(),
-	            Name = "Default",
+				Id = walletId,
+	            Name = name,
 	            Created = DateTime.UtcNow,
                 EncodedMnemonic = mnemonic.ToString(),
-	            Master = master
+                Wallet = new Wallet(walletCreation),
+                MasterPrivKeyBase58 = privKey.ToString()
             };
         }
 
-	    public async Task<Wallet> GetWallet(Guid walletId)
+	    public async Task<WalletHandler> GetWallet(Guid walletId)
 	    {
-		    return await persistenceService.LoadObject<Wallet>(Path.Combine(Constants.WalletFolder, walletId.ToString()));
+		    var walletHandler = await persistenceService.LoadObject<WalletHandler>(Path.Combine(Constants.WalletFolder, walletId.ToString(), Constants.WalletHandlerFile));
+	        var wallet = await persistenceService.LoadFromStream(
+	            Path.Combine(Constants.WalletFolder, walletId.ToString(), Constants.WalletFile), Wallet.Load);
+	        walletHandler.Wallet = wallet;
+	        return walletHandler;
 	    }
 
-        public async Task<Wallet> GetCurrentWallet()
+        public async Task<WalletHandler> GetCurrentWallet()
         {
-			if (currentWallet == null)
+			if (_currentWalletHandler == null)
 			{
 				var setting = await settingService.GetSetting();
 				if (setting?.CurrentWalletId == null)
 				{
 					return null;
 				}
-				currentWallet = await GetWallet(setting.CurrentWalletId.Value);
+				_currentWalletHandler = await GetWallet(setting.CurrentWalletId.Value);
 			}
-			return currentWallet;
+			return _currentWalletHandler;
         }
 
-        public async Task SaveWallet(Wallet wallet, bool makeDefault = false)
+        public async Task SaveWallet(WalletHandler walletHandler, bool makeDefault = false)
 	    {
-		    await persistenceService.SaveObject(wallet, Path.Combine(Constants.WalletFolder, wallet.Id.ToString()));
-		    if (makeDefault)
+		    await persistenceService.SaveObject(walletHandler, Path.Combine(Constants.WalletFolder, walletHandler.Id.ToString(), Constants.WalletHandlerFile));
+	        await persistenceService.SaveFromStream(
+	            Path.Combine(Constants.WalletFolder, walletHandler.Id.ToString(), Constants.WalletFile),
+	            walletHandler.Wallet.Save);
+            if (makeDefault)
 		    {
-			    currentWallet = wallet;
+			    _currentWalletHandler = walletHandler;
 		    }
 	    }
 
-        public async Task<string> GetNextUnusedAddress(Wallet wallet)
+        public async Task<string> GetNextUnusedAddress(WalletHandler walletHandler)
         {
-            if(wallet.CurrentAddresses == null)
-                wallet.CurrentAddresses = new List<Address>();
+            //if(walletHandler.CurrentAddresses == null)
+            //    walletHandler.CurrentAddresses = new List<Address>();
 
-            var unusedAddress = wallet.CurrentAddresses.FirstOrDefault(x => !x.HasHistory);
-            if (unusedAddress == null)
-            {
-                var masterKey = ExtKey.Parse(wallet.Master.ExtPrivateKeyWif);
-                var currentIndex = wallet.CurrentAddresses.Count();
-                var derivedKey = masterKey.Derive(currentIndex, true);
-                unusedAddress = new Address
-                {
-                    ExtPrivateKeyWif = derivedKey.ToString(Constants.SupportedNetworkType.GetNetwork()),
-                    PublicAddress = derivedKey.Neuter().PubKey.ToString(Constants.SupportedNetworkType.GetNetwork()),
-                    HDPath = ""
-                };
-                wallet.CurrentAddresses.Add(unusedAddress);
-                await SaveWallet(wallet);
-            }
-            return unusedAddress.PublicAddress;
+            //var unusedAddress = walletHandler.CurrentAddresses.FirstOrDefault(x => !x.HasHistory);
+            //if (unusedAddress == null)
+            //{
+            //    var masterKey = ExtKey.Parse(walletHandler.Master.ExtPrivateKeyWif);
+            //    var currentIndex = walletHandler.CurrentAddresses.Count();
+            //    var derivedKey = masterKey.Derive(currentIndex, true);
+            //    unusedAddress = new Address
+            //    {
+            //        ExtPrivateKeyWif = derivedKey.ToString(Constants.SupportedNetworkType.GetNetwork()),
+            //        PublicAddress = derivedKey.Neuter().PubKey.ToString(Constants.SupportedNetworkType.GetNetwork()),
+            //        HDPath = ""
+            //    };
+            //    walletHandler.CurrentAddresses.Add(unusedAddress);
+            //    await SaveWallet(walletHandler);
+            //}
+            //return unusedAddress.PublicAddress;
+            return "";
         }
     }
 }

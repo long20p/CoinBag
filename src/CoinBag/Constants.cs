@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CoinBag.Helpers;
 using CoinBag.Models;
+using NBitcoin;
 
 namespace CoinBag
 {
@@ -9,12 +11,19 @@ namespace CoinBag
     {
 		//Files
 	    public const string SettingFile = "Settings.json";
+        public const string WalletHandlerFile = "handler.dat";
+        public const string WalletFile = "wallet.dat";
+        public const string AddressManagerFile = "addrman.dat";
+        public const string ChainFile = "chain.dat";
+        public const string TrackerFile = "tracker.dat";
 
 		//Folders
 	    public const string WalletFolder = "Wallet";
 
 		//Settings
 	    public const NetworkType SupportedNetworkType = NetworkType.TestNet;
+
+        public static Network CurrentNetwork => SupportedNetworkType.GetNetwork();
 
         //Pages
         public const string MainPage = "Overview";

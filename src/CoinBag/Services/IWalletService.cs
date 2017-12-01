@@ -8,10 +8,10 @@ namespace CoinBag.Services
 {
     public interface IWalletService
     {
-	    Wallet CreateNew(string passphrase = null);
-	    Task<Wallet> GetWallet(Guid walletId);
-        Task<Wallet> GetCurrentWallet();
-	    Task SaveWallet(Wallet wallet, bool makeDefault = false);
-        Task<string> GetNextUnusedAddress(Wallet wallet);
+	    WalletHandler CreateNew(string name, string passphrase = null);
+	    Task<WalletHandler> GetWallet(Guid walletId);
+        Task<WalletHandler> GetCurrentWallet();
+	    Task SaveWallet(WalletHandler walletHandler, bool makeDefault = false);
+        Task<string> GetNextUnusedAddress(WalletHandler walletHandler);
     }
 }

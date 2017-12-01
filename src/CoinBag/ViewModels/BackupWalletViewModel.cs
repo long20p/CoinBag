@@ -29,12 +29,12 @@ namespace CoinBag.ViewModels
 
         public async Task BackupCommandExecute()
         {
-            var wallet = await walletService.GetCurrentWallet();
-            var fileName = $"coinbag_backup_{wallet.Name}_{DateTime.Now:yyyyMMddhhmmss}";
+            var walletHandler = await walletService.GetCurrentWallet();
+            var fileName = $"coinbag_backup_{walletHandler.Name}_{DateTime.Now:yyyyMMddhhmmss}";
             using (var memStream = new MemoryStream())
             using (var writer = new BinaryWriter(memStream))
             {
-                writer.Write(JsonConvert.SerializeObject(wallet));
+                writer.Write(JsonConvert.SerializeObject(walletHandler));
                 await fileService.SaveToDownloads(fileName, memStream.ToArray());
             }
 

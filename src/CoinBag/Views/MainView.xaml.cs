@@ -17,11 +17,11 @@ namespace CoinBag.Views
         public MainView()
         {
             InitializeComponent();
-            MessagingCenter.Subscribe<SplashView, Wallet>(this, Messages.InitializationCompleted, async (sender, wallet) =>
+            MessagingCenter.Subscribe<SplashView, WalletHandler>(this, Messages.InitializationCompleted, async (sender, wallet) =>
             {
-                ViewModel.CurrentWallet = wallet;
+                ViewModel.CurrentWalletHandler = wallet;
                 await Navigation.PopModalAsync();
-                MessagingCenter.Unsubscribe<SplashView, Wallet>(this, Messages.InitializationCompleted);
+                MessagingCenter.Unsubscribe<SplashView, WalletHandler>(this, Messages.InitializationCompleted);
             });
             Navigation.PushModalAsync(new SplashView());
         }

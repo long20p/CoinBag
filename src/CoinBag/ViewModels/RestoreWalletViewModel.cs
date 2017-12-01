@@ -63,7 +63,7 @@ namespace CoinBag.ViewModels
             using(var reader = new BinaryReader(memStream))
             {
                 var raw = reader.ReadString();
-                var wallet = JsonConvert.DeserializeObject<Wallet>(raw);
+                var wallet = JsonConvert.DeserializeObject<WalletHandler>(raw);
                 await walletService.SaveWallet(wallet);
                 var setting = await settingService.GetSetting();
                 setting.CurrentWalletId = wallet.Id;

@@ -4,6 +4,10 @@ using System.Text;
 using System.Threading.Tasks;
 using CoinBag.Models;
 using CoinBag.Services;
+using NBitcoin;
+using NBitcoin.Protocol;
+using NBitcoin.Protocol.Behaviors;
+using NBitcoin.SPV;
 
 namespace CoinBag.ViewModels
 {
@@ -11,12 +15,20 @@ namespace CoinBag.ViewModels
     {
 	    private ISettingService settingService;
 	    private IWalletService walletService;
+        private IAddressManagerService addressManagerService;
+        private IChainService chainService;
+        private IOperationTrackerService trackerService;
 
-        public SplashViewModel(IWalletService walletService, ISettingService settingService)
+        public SplashViewModel(IWalletService walletService, ISettingService settingService,
+            IAddressManagerService addressManagerService, IChainService chainService,
+            IOperationTrackerService trackerService)
         {
-	        this.walletService = walletService;
-	        this.settingService = settingService;
-	        AppName = "CoinBag";
+            this.walletService = walletService;
+            this.settingService = settingService;
+            this.addressManagerService = addressManagerService;
+            this.chainService = chainService;
+            this.trackerService = trackerService;
+            AppName = "CoinBag";
         }
 
         private string appName;
@@ -26,22 +38,43 @@ namespace CoinBag.ViewModels
             set { SetProperty(ref appName, value); }
         }
 
-        public async Task<Wallet> LoadWallet()
+        public async Task InitializeConnection(Wallet currentWallet)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                var parameters = new NodeConnectionParameters();
+                parameters.TemplateBehaviors.Add(new AddressManagerBehavior(addressManagerService.LoadAddressManager()));
+                parameters.TemplateBehaviors.Add(new ChainBehavior(chainService.LoadChain().Result));
+                parameters.TemplateBehaviors.Add(new TrackerBehavior(trackerService.LoadTracker().Result));
+
+                App.NodesGroup = new NodesGroup(Constants.CurrentNetwork, parameters,
+                    new NodeRequirement {RequiredServices = NodeServices.Network})
+                {
+                    MaximumNodeConnection = 6
+                };
+                App.NodesGroup.Connect();
+
+                currentWallet.Configure(App.NodesGroup);
+                currentWallet.Connect();
+            });
+        }
+
+        public async Task<WalletHandler> LoadWallet()
         {
             return await walletService.GetCurrentWallet();
         }
 
-	    public async Task<Wallet> CreateNewWallet(bool makeDefault = false)
+	    public async Task<WalletHandler> CreateNewWallet(bool makeDefault = false)
 	    {
-		    var wallet = walletService.CreateNew();
-		    await walletService.SaveWallet(wallet);
+		    var walletHandler = walletService.CreateNew("Default");
+		    await walletService.SaveWallet(walletHandler);
 		    if (makeDefault)
 		    {
 				var setting = await settingService.GetSetting();
-			    setting.CurrentWalletId = wallet.Id;
+			    setting.CurrentWalletId = walletHandler.Id;
 			    await settingService.SaveSetting(setting);
 		    }
-		    return wallet;
+		    return walletHandler;
 	    }
     }
 }

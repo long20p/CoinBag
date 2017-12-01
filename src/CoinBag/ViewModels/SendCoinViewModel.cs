@@ -6,6 +6,7 @@ using System.Windows.Input;
 using CoinBag.Services;
 using NBitcoin;
 using Xamarin.Forms;
+using ZXing.Mobile;
 
 namespace CoinBag.ViewModels
 {
@@ -17,12 +18,15 @@ namespace CoinBag.ViewModels
         {
 	        this.walletService = walletService;
 	        Title = "Send Coin";
-			SendCommand = new Command(async () => await SendCommandExecute());
+            ScanAddressCommand = new Command(async () => await ScanAddressCommandExecute());
+            SendCommand = new Command(async () => await SendCommandExecute());
         }
 
 		public ICommand SendCommand { get; set; }
+        public ICommand ScanAddressCommand { get; set; }
 
-		private string destAddress;
+
+        private string destAddress;
 		public string DestinationAddress
 		{
 			get { return destAddress; }
@@ -43,11 +47,22 @@ namespace CoinBag.ViewModels
 			set { SetProperty(ref fee, value); }
 		}
 
-	    private async Task SendCommandExecute()
+        private async Task ScanAddressCommandExecute()
+        {
+            var scanner = new MobileBarcodeScanner();
+            var result = await scanner.Scan();
+            if (result != null)
+            {
+                DestinationAddress = result.Text;
+            }
+        }
+
+        private async Task SendCommandExecute()
 	    {
 		    var currentWallet = await walletService.GetCurrentWallet();
 		    var transaction = new Transaction();
 			
+
 	    }
 	}
 }

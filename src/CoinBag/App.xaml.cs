@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Adapt.Presentation;
 using CoinBag.Views;
+using NBitcoin.Protocol;
 using Xamarin.Forms;
 
 namespace CoinBag
@@ -19,6 +20,8 @@ namespace CoinBag
         }
 
         public static IPresentationFactory PresentationFactory { get; private set; }
+
+        public static NodesGroup NodesGroup { get; set; }
 
         protected override void OnStart()
         {

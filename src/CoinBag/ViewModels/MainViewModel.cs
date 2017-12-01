@@ -29,13 +29,13 @@ namespace CoinBag.ViewModels
 	        });
 		}
 
-		private Wallet currentWallet;
-		public Wallet CurrentWallet
+		private WalletHandler _currentWalletHandler;
+		public WalletHandler CurrentWalletHandler
 		{
-			get { return currentWallet; }
+			get { return _currentWalletHandler; }
 			set
 			{
-				SetProperty(ref currentWallet, value);
+				SetProperty(ref _currentWalletHandler, value);
 
 			}
 		}

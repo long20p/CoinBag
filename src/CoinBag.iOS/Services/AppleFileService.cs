@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace CoinBag.iOS.Services
 {
     public class AppleFileService : IFileService
     {
+        public string BasePath => "";
+
         public async Task SaveTextFile(string filePath, string content, bool overwrite = true)
         {
             
@@ -24,6 +27,16 @@ namespace CoinBag.iOS.Services
         public async Task SaveToDownloads(string fileName, byte[] content)
         {
             
+        }
+
+        public async Task SaveFromStream(string filePath, Action<Stream> save, bool overwrite = true)
+        {
+            
+        }
+
+        public async Task<T> LoadFromStream<T>(string filePath, Func<Stream, T> load)
+        {
+            return default(T);
         }
     }
 }

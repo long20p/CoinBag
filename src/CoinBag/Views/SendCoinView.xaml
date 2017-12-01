@@ -17,7 +17,10 @@
             </Grid.RowDefinitions>
             
             <Label Text="Address" />
-            <Entry Grid.Column="1" Text="{Binding DestinationAddress}" />
+            <StackLayout Grid.Column="1" Orientation="Horizontal">
+                <Entry HorizontalOptions="FillAndExpand" Text="{Binding DestinationAddress}" />
+                <Button Text="Scan" Command="{Binding ScanAddressCommand}" />
+            </StackLayout>
             
             <Label Grid.Row="1" Text="Amount" />
             <Entry Grid.Row="1" Grid.Column="1" Keyboard="Numeric" Text="{Binding Amount}" />

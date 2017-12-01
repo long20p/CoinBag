@@ -29,18 +29,11 @@ namespace CoinBag.Droid.Services
 			}
 		}
 
-		public async Task SaveTextFile(string filePath, string content, bool overwrite = true)
+	    public string BasePath => documentsRootPath;
+
+	    public async Task SaveTextFile(string filePath, string content, bool overwrite = true)
 		{
-			var fullPath = Path.Combine(documentsRootPath, filePath);
-			var dir = Path.GetDirectoryName(fullPath);
-			if (!Directory.Exists(dir))
-			{
-				Directory.CreateDirectory(dir);
-			}
-			if (!overwrite && File.Exists(fullPath))
-			{
-				throw new FileExistException($"File {filePath} already exists and overwriting is not requested");
-			}
+		    var fullPath = GetFullPath(filePath, overwrite);
 			File.WriteAllText(fullPath, content);
 		}
 
@@ -59,6 +52,45 @@ namespace CoinBag.Droid.Services
 	        var fullPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath,
 	            Android.OS.Environment.DirectoryDownloads, fileName);
             File.WriteAllBytes(fullPath, content);
+	    }
+
+	    public async Task SaveFromStream(string filePath, Action<Stream> save, bool overwrite = true)
+	    {
+	        var fullPath = GetFullPath(filePath, overwrite);
+	        using (var fs = File.Open(fullPath, FileMode.Create, FileAccess.Write))
+	        {
+	            save(fs);
+	        }
+	    }
+
+	    public async Task<T> LoadFromStream<T>(string filePath, Func<Stream, T> load)
+	    {
+	        var fullPath = Path.Combine(documentsRootPath, filePath);
+	        if (!File.Exists(fullPath))
+	        {
+	            return default(T);
+	        }
+
+	        using (var fs = File.Open(fullPath, FileMode.Open, FileAccess.Read))
+	        {
+	            return load(fs);
+	        }
+        }
+
+	    private string GetFullPath(string filePath, bool overwrite)
+	    {
+	        var fullPath = Path.Combine(documentsRootPath, filePath);
+	        var dir = Path.GetDirectoryName(fullPath);
+	        if (!Directory.Exists(dir))
+	        {
+	            Directory.CreateDirectory(dir);
+	        }
+	        if (!overwrite && File.Exists(fullPath))
+	        {
+	            throw new FileExistException($"File {filePath} already exists and overwriting is not requested");
+	        }
+
+	        return fullPath;
 	    }
 	}
 }
