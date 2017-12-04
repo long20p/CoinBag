@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using CoinBag.Models;
+using NBitcoin;
 
 namespace CoinBag.Services
 {
@@ -11,7 +12,9 @@ namespace CoinBag.Services
 	    WalletHandler CreateNew(string name, string passphrase = null);
 	    Task<WalletHandler> GetWallet(Guid walletId);
         Task<WalletHandler> GetCurrentWallet();
-	    Task SaveWallet(WalletHandler walletHandler, bool makeDefault = false);
+        Task<BitcoinAddress> GetUnusedAddress();
+
+        Task SaveWallet(WalletHandler walletHandler, bool makeDefault = false);
         Task<string> GetNextUnusedAddress(WalletHandler walletHandler);
     }
 }

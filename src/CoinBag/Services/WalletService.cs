@@ -71,6 +71,19 @@ namespace CoinBag.Services
 			return _currentWalletHandler;
         }
 
+        public async Task<BitcoinAddress> GetUnusedAddress()
+        {
+            var wallet = await GetCurrentWallet();
+            wallet.Wallet.GetNextScriptPubKey();
+            var bitcoinAddr = wallet.Wallet.GetKnownScripts(true)
+                .Where(s => s.Value.Indexes[0] == 0) //On public branch
+                .OrderByDescending(s => s.Value.Indexes[1]) //We generate HD on the path : 0/N, the highest is the latest scriptPubKey
+                .Select(s => s.Key.GetDestinationAddress(Constants.CurrentNetwork))
+                .FirstOrDefault();
+
+            return bitcoinAddr;
+        }
+
         public async Task SaveWallet(WalletHandler walletHandler, bool makeDefault = false)
 	    {
 		    await persistenceService.SaveObject(walletHandler, Path.Combine(Constants.WalletFolder, walletHandler.Id.ToString(), Constants.WalletHandlerFile));

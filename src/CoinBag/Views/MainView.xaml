@@ -28,14 +28,34 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout>
-                                <Label Text="{Binding Address.PublicAddress}" />
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Direction, Converter={StaticResource DirectionToSignConverter}}" />
-                                    <Label Text="{Binding Amount}" />
-                                    <Label Text="BTC" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Orientation="Horizontal" Grid.ColumnSpan="3">
+                                    <Label Text="Transaction ID: " />
+                                    <Label Text="{Binding TransactionId}" />
                                 </StackLayout>
-                            </StackLayout>
+
+                                <Label Grid.Row="1" Grid.Column="1" Text="Amount" />
+                                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Balance}" />
+                                <!--<Label Text="{Binding Direction, Converter={StaticResource DirectionToSignConverter}}" />-->
+
+                                <Label Grid.Row="2" Grid.Column="1" Text="Transaction Time" />
+                                <Label Grid.Row="2" Grid.Column="2" Text="{Binding TransactionTime}" />
+
+                                <Label Grid.Row="3" Grid.Column="1" Text="Confirmations" />
+                                <Label Grid.Row="3" Grid.Column="2" Text="{Binding Confirmations}" />
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

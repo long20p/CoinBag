@@ -30,15 +30,8 @@ namespace CoinBag.ViewModels
 
         public async Task GetUnusedAddress()
         {
-            var wallet = await walletService.GetCurrentWallet();
-            var address = await walletService.GetNextUnusedAddress(wallet);
-            //var barcodeWriter = new BarcodeWriter
-            //{
-            //    Format = BarcodeFormat.QR_CODE,
-            //    Options = new EncodingOptions { Width = 300, Height = 300 }
-            //};
-            //AddressQrCodeImage = barcodeWriter.Write(address);
-            ReceivingAddress = address;
+            var bitcoinAddr = await walletService.GetUnusedAddress();
+            ReceivingAddress = bitcoinAddr?.ToString();
         }
     }
 }

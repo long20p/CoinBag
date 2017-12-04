@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adapt.Presentation;
+using CoinBag.Models;
 using CoinBag.Views;
 using NBitcoin.Protocol;
 using Xamarin.Forms;
@@ -11,6 +12,8 @@ namespace CoinBag
 {
     public partial class App : Application
     {
+        public static readonly object SaveLock = new object();
+
         public App(GlobalSetup setup, IPresentationFactory presentationFactory)
         {
             InitializeComponent();

@@ -5,28 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using CoinBag.Helpers;
 using CoinBag.Models;
+using CoinBag.Services;
+using NBitcoin.Protocol.Behaviors;
+using NBitcoin.SPV;
 
 namespace CoinBag.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
+        private IAddressManagerService addressManagerService;
+        private IChainService chainService;
+        private IOperationTrackerService trackerService;
+        private IWalletService walletService;
+
+        public MainViewModel(IAddressManagerService addressManagerService, IChainService chainService, IOperationTrackerService trackerService, IWalletService walletService)
         {
+            this.addressManagerService = addressManagerService;
+            this.chainService = chainService;
+            this.trackerService = trackerService;
+            this.walletService = walletService;
+
             Title = "Coin bag";
 
-			RecentTransactions = new ObservableRangeCollection<TransactionHistory>();
-	        RecentTransactions.Add(new TransactionHistory
-	        {
-		        Amount = 0.0754M,
-		        Direction = TransactionDirection.In,
-		        Address = new Address {PublicAddress = "1A067jh43f43rtedg55t3"}
-	        });
-	        RecentTransactions.Add(new TransactionHistory
-	        {
-		        Amount = 1.52M,
-		        Direction = TransactionDirection.Out,
-		        Address = new Address { PublicAddress = "1fdg5hj574g296gdrfv2" }
-	        });
+			RecentTransactions = new ObservableRangeCollection<TransactionDetail>();
 		}
 
 		private WalletHandler _currentWalletHandler;
@@ -36,17 +37,57 @@ namespace CoinBag.ViewModels
 			set
 			{
 				SetProperty(ref _currentWalletHandler, value);
-
 			}
 		}
 
-		private decimal totalBalance;
-		public decimal TotalBalance
-		{
-			get { return totalBalance; }
-			set { SetProperty(ref totalBalance, value); }
-		}
+        private decimal totalBalance;
+        public decimal TotalBalance
+        {
+            get { return totalBalance; }
+            set { SetProperty(ref totalBalance, value); }
+        }
 
-	    public ObservableRangeCollection<TransactionHistory> RecentTransactions { get; set; }
-	}
+        public ObservableRangeCollection<TransactionDetail> RecentTransactions { get; set; }
+
+        public void UpdateTransactions()
+        {
+            var trans = CurrentWalletHandler.Wallet.GetTransactions().Select(tx => new TransactionDetail(tx)).ToList();
+            var newTrans = trans.Except(RecentTransactions).ToList();
+            if (newTrans.Any())
+            {
+                RecentTransactions.AddRange(newTrans);
+            }
+        }
+
+        public void PeriodicRefresh()
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    await Task.Delay(2000);
+                    UpdateTransactions();
+                }
+            });
+        }
+
+        public void PeriodicSave()
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    await Task.Delay(60000);
+                    lock (App.SaveLock)
+                    {
+                        var templateBehaviors = CurrentWalletHandler.Wallet.Group.NodeConnectionParameters.TemplateBehaviors;
+                        addressManagerService.SaveAddressManager(templateBehaviors.Find<AddressManagerBehavior>().AddressManager);
+                        chainService.SaveChain(templateBehaviors.Find<ChainBehavior>().Chain);
+                        trackerService.SaveTracker(templateBehaviors.Find<TrackerBehavior>().Tracker);
+                        walletService.SaveWallet(CurrentWalletHandler);
+                    }
+                }
+            });
+        }
+    }
 }

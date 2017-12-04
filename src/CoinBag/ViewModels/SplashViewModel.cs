@@ -47,14 +47,14 @@ namespace CoinBag.ViewModels
                 parameters.TemplateBehaviors.Add(new ChainBehavior(chainService.LoadChain().Result));
                 parameters.TemplateBehaviors.Add(new TrackerBehavior(trackerService.LoadTracker().Result));
 
-                App.NodesGroup = new NodesGroup(Constants.CurrentNetwork, parameters,
+                var group = new NodesGroup(Constants.CurrentNetwork, parameters,
                     new NodeRequirement {RequiredServices = NodeServices.Network})
                 {
-                    MaximumNodeConnection = 6
+                    MaximumNodeConnection = 5
                 };
-                App.NodesGroup.Connect();
+                group.Connect();
 
-                currentWallet.Configure(App.NodesGroup);
+                currentWallet.Configure(group);
                 currentWallet.Connect();
             });
         }

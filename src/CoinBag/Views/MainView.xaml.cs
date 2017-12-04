@@ -20,6 +20,9 @@ namespace CoinBag.Views
             MessagingCenter.Subscribe<SplashView, WalletHandler>(this, Messages.InitializationCompleted, async (sender, wallet) =>
             {
                 ViewModel.CurrentWalletHandler = wallet;
+                ViewModel.UpdateTransactions();
+                ViewModel.PeriodicRefresh();
+                ViewModel.PeriodicSave();
                 await Navigation.PopModalAsync();
                 MessagingCenter.Unsubscribe<SplashView, WalletHandler>(this, Messages.InitializationCompleted);
             });
