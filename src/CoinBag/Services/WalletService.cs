@@ -50,12 +50,12 @@ namespace CoinBag.Services
 
 	    public async Task<WalletHandler> GetWallet(Guid walletId)
 	    {
-		    var walletHandler = await persistenceService.LoadObject<WalletHandler>(Path.Combine(Constants.WalletFolder, walletId.ToString(), Constants.WalletHandlerFile));
+	        var walletHandler = await persistenceService.LoadObject<WalletHandler>(Path.Combine(Constants.WalletFolder, walletId.ToString(), Constants.WalletHandlerFile));
 	        var wallet = await persistenceService.LoadFromStream(
 	            Path.Combine(Constants.WalletFolder, walletId.ToString(), Constants.WalletFile), Wallet.Load);
 	        walletHandler.Wallet = wallet;
 	        return walletHandler;
-	    }
+        }
 
         public async Task<WalletHandler> GetCurrentWallet()
         {
@@ -86,14 +86,35 @@ namespace CoinBag.Services
 
         public async Task SaveWallet(WalletHandler walletHandler, bool makeDefault = false)
 	    {
-		    await persistenceService.SaveObject(walletHandler, Path.Combine(Constants.WalletFolder, walletHandler.Id.ToString(), Constants.WalletHandlerFile));
-	        await persistenceService.SaveFromStream(
-	            Path.Combine(Constants.WalletFolder, walletHandler.Id.ToString(), Constants.WalletFile),
-	            walletHandler.Wallet.Save);
-            if (makeDefault)
-		    {
-			    _currentWalletHandler = walletHandler;
-		    }
+	        try
+	        {
+	            await persistenceService.SaveObject(walletHandler, Path.Combine(Constants.WalletFolder, walletHandler.Id.ToString(), Constants.WalletHandlerFile));
+	            if (walletHandler.Wallet == null)
+	            {
+	                var pubKey = walletHandler.MasterPrivKey.Neuter();
+	                var walletCreation = new WalletCreation
+	                {
+	                    Name = walletHandler.Id.ToString(),
+	                    Network = Constants.CurrentNetwork,
+	                    RootKeys = new[] { pubKey.ExtPubKey }
+	                };
+	                walletHandler.Wallet = new Wallet(walletCreation);
+                }
+
+	            await persistenceService.SaveFromStream(
+	                Path.Combine(Constants.WalletFolder, walletHandler.Id.ToString(), Constants.WalletFile),
+	                walletHandler.Wallet.Save);
+
+                if (makeDefault)
+	            {
+	                _currentWalletHandler = walletHandler;
+	            }
+            }
+	        catch (Exception e)
+	        {
+	            Console.WriteLine(e);
+	            throw;
+	        }
 	    }
 
         public async Task<string> GetNextUnusedAddress(WalletHandler walletHandler)

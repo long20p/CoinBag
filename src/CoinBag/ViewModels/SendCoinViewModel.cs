@@ -64,7 +64,8 @@ namespace CoinBag.ViewModels
         private async Task SendCommandExecute()
 	    {
 		    var currentWallet = await walletService.GetCurrentWallet();
-	        var receivedCoins = currentWallet.Wallet.GetTransactions().SelectMany(x => x.ReceivedCoins);
+            //var trans = currentWallet.Wallet.GetTransactions();
+            var receivedCoins = currentWallet.Wallet.GetTransactions().SelectMany(x => x.ReceivedCoins);
             var knownScriptPubKeys = currentWallet.Wallet.GetKnownScripts(true);
 
 	        var transaction = new Transaction();

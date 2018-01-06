@@ -19,6 +19,8 @@ namespace CoinBag
 
 		//Folders
 	    public const string WalletFolder = "Wallet";
+        public const string MainAppFolder = "CoinBag";
+        public const string BackupFolder = "CoinBagBackup";
 
 		//Settings
 	    public const NetworkType SupportedNetworkType = NetworkType.TestNet;

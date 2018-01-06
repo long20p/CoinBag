@@ -13,7 +13,7 @@
         <StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Current wallet:" />
-                <Label Text="{Binding CurrentWallet.Name}" />
+                <Label Text="{Binding CurrentWalletHandler.Name}" />
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Balance" />
@@ -47,7 +47,7 @@
                                 </StackLayout>
 
                                 <Label Grid.Row="1" Grid.Column="1" Text="Amount" />
-                                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Balance}" />
+                                <Label Grid.Row="1" Grid.Column="2" Text="{Binding BalanceDisplay}" />
                                 <!--<Label Text="{Binding Direction, Converter={StaticResource DirectionToSignConverter}}" />-->
 
                                 <Label Grid.Row="2" Grid.Column="1" Text="Transaction Time" />
@@ -61,8 +61,8 @@
                 </ListView.ItemTemplate>
             </ListView>
             <StackLayout Orientation="Horizontal">
-                <Button Text="Get coin" HorizontalOptions="StartAndExpand" />
-                <Button Text="Send coin" HorizontalOptions="StartAndExpand" />
+                <Button Text="Get coin" HorizontalOptions="StartAndExpand" Command="{Binding GoToGetCoinCommand}" />
+                <Button Text="Send coin" HorizontalOptions="StartAndExpand" Command="{Binding GoToSendCoinCommand}" />
             </StackLayout>
         </StackLayout>
     </views:MainViewPage.Content>

@@ -45,9 +45,12 @@ namespace CoinBag.ViewModels
             var filePicker = App.PresentationFactory.CreateFilePicker();
             using (var fileData = await filePicker.PickAndOpenFileForReading())
             {
-                SelectedFilePath = (fileData.FileStream as FileStream).Name;
-                SelectedFile = new byte[fileData.FileStream.Length];
-                fileData.FileStream.Read(SelectedFile, 0, (int)fileData.FileStream.Length);
+                if (fileData?.FileStream is FileStream)
+                {
+                    SelectedFilePath = (fileData.FileStream as FileStream).Name;
+                    SelectedFile = new byte[fileData.FileStream.Length];
+                    fileData.FileStream.Read(SelectedFile, 0, (int)fileData.FileStream.Length);
+                }
             }
         }
 
@@ -55,7 +58,7 @@ namespace CoinBag.ViewModels
         {
             if (SelectedFile == null)
             {
-                //TODO: inform user
+                notificationService.ShowInfo("No file selected");
                 return;
             }
 

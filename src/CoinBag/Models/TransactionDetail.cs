@@ -15,7 +15,8 @@ namespace CoinBag.Models
             this._tx = tx;
         }
 
-        public string Balance => $"{_tx.Balance.ToUnit(MoneyUnit.BTC)} BTC";
+        public Money Balance => _tx.Balance;
+        public string BalanceDisplay => $"{_tx.Balance.ToUnit(MoneyUnit.BTC)} BTC";
         public string TransactionTime => _tx.BlockInformation?.Header.BlockTime.ToString("yyyy/MM/dd hh:mm:ss") ?? "N/A";
         public string TransactionId => _tx.Transaction.GetHash().ToString();
         public int Confirmations => _tx.BlockInformation?.Confirmations ?? 0;

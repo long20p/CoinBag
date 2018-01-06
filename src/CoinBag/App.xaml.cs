@@ -19,12 +19,15 @@ namespace CoinBag
             InitializeComponent();
             PresentationFactory = presentationFactory;
             DI.ServiceProvider = setup.CreateServiceProvider();
-            MainPage = new RootPage();
+            RootPage = new RootPage();
+            MainPage = RootPage;
         }
 
         public static IPresentationFactory PresentationFactory { get; private set; }
 
         public static NodesGroup NodesGroup { get; set; }
+
+        public static RootPage RootPage { get; private set; }
 
         protected override void OnStart()
         {

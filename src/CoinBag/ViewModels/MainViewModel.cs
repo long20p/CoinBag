@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CoinBag.Helpers;
 using CoinBag.Models;
 using CoinBag.Services;
 using NBitcoin.Protocol.Behaviors;
 using NBitcoin.SPV;
+using Xamarin.Forms;
 
 namespace CoinBag.ViewModels
 {
@@ -28,9 +30,15 @@ namespace CoinBag.ViewModels
             Title = "Coin bag";
 
 			RecentTransactions = new ObservableRangeCollection<TransactionDetail>();
+            GoToGetCoinCommand = new Command(GoToGetCoinCommandExecute);
+            GoToSendCoinCommand = new Command(GoToSendCoinCommandExecute);
 		}
 
-		private WalletHandler _currentWalletHandler;
+        public ICommand GoToGetCoinCommand { get; set; }
+        public ICommand GoToSendCoinCommand { get; set; }
+
+
+        private WalletHandler _currentWalletHandler;
 		public WalletHandler CurrentWalletHandler
 		{
 			get { return _currentWalletHandler; }
@@ -56,6 +64,7 @@ namespace CoinBag.ViewModels
             if (newTrans.Any())
             {
                 RecentTransactions.AddRange(newTrans);
+                TotalBalance = (decimal)RecentTransactions.Sum(x => x.Balance) / 100000000;
             }
         }
 
@@ -88,6 +97,16 @@ namespace CoinBag.ViewModels
                     }
                 }
             });
+        }
+
+        private void GoToGetCoinCommandExecute()
+        {
+            App.RootPage.NavigateTo(Constants.GetCoinPage);
+        }
+
+        private void GoToSendCoinCommandExecute()
+        {
+            App.RootPage.NavigateTo(Constants.SendCoinPage);
         }
     }
 }

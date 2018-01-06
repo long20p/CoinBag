@@ -19,14 +19,21 @@ namespace CoinBag.Droid.Services
 	public class AndroidFileService : IFileService
 	{
 		private string documentsRootPath;
+	    private string backupRootPath;
 
 		public AndroidFileService()
 		{
-			documentsRootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "CoinBag");
-			if (!Directory.Exists(documentsRootPath))
-			{
-				Directory.CreateDirectory(documentsRootPath);
-			}
+		    documentsRootPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Constants.MainAppFolder); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "CoinBag");
+            backupRootPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Constants.BackupFolder);
+
+		    new List<string> {documentsRootPath, backupRootPath}.ForEach(path =>
+		    {
+		        if (!Directory.Exists(path))
+		        {
+		            Directory.CreateDirectory(path);
+		        }
+		    });
+
 		}
 
 	    public string BasePath => documentsRootPath;
@@ -47,10 +54,9 @@ namespace CoinBag.Droid.Services
 			return await Task.FromResult(File.ReadAllText(fullPath));
 		}
 
-	    public async Task SaveToDownloads(string fileName, byte[] content)
+	    public async Task SaveToBackupFolder(string fileName, byte[] content)
 	    {
-	        var fullPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath,
-	            Android.OS.Environment.DirectoryDownloads, fileName);
+	        var fullPath = Path.Combine(backupRootPath, fileName);
             File.WriteAllBytes(fullPath, content);
 	    }
 

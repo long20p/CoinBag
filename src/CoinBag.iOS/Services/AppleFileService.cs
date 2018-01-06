@@ -24,7 +24,7 @@ namespace CoinBag.iOS.Services
             return "";
         }
 
-        public async Task SaveToDownloads(string fileName, byte[] content)
+        public async Task SaveToBackupFolder(string fileName, byte[] content)
         {
             
         }

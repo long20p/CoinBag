@@ -34,8 +34,9 @@ namespace CoinBag.ViewModels
             using (var memStream = new MemoryStream())
             using (var writer = new BinaryWriter(memStream))
             {
-                writer.Write(JsonConvert.SerializeObject(walletHandler));
-                await fileService.SaveToDownloads(fileName, memStream.ToArray());
+                var serializedWallet = JsonConvert.SerializeObject(walletHandler);
+                writer.Write(serializedWallet);
+                await fileService.SaveToBackupFolder(fileName, memStream.ToArray());
             }
 
             notificationService.ShowInfo("Wallet was backed up successfully");
