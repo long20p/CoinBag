@@ -28,7 +28,7 @@
             <Label HorizontalOptions="Center" Text="or copy the address directly:" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
                 <Entry InputTransparent="true" HorizontalOptions="FillAndExpand" Text="{Binding ReceivingAddress}" />
-                <Button Text="Copy" />
+                <Button Text="Copy" Command="{Binding CopyAddressCommand}" />
             </StackLayout>
         </StackLayout>
     </views:ReceiveCoinViewPage.Content>

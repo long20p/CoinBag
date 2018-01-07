@@ -64,8 +64,10 @@ namespace CoinBag.ViewModels
         private async Task SendCommandExecute()
 	    {
 		    var currentWallet = await walletService.GetCurrentWallet();
-            //var trans = currentWallet.Wallet.GetTransactions();
-            var receivedCoins = currentWallet.Wallet.GetTransactions().SelectMany(x => x.ReceivedCoins);
+            var trans = currentWallet.Wallet.GetTransactions();
+            var receivedCoins = trans.SelectMany(x => x.ReceivedCoins);
+	        var spendCoins = trans.SelectMany(x => x.SpentCoins);
+	        var spendableCoins = receivedCoins.Except(spendCoins);
             var knownScriptPubKeys = currentWallet.Wallet.GetKnownScripts(true);
 
 	        var transaction = new Transaction();
@@ -76,7 +78,7 @@ namespace CoinBag.ViewModels
 	        {
                 var privKeys = new List<Key>();
 	            var masterKey = currentWallet.MasterPrivKey.ExtKey;
-	            var inputCoins = coinSelector.Select(receivedCoins, targetAmount + feeToInclude).ToList();
+	            var inputCoins = coinSelector.Select(spendableCoins, targetAmount + feeToInclude).ToList();
 	            //Input
 	            foreach (var inputCoin in inputCoins)
 	            {

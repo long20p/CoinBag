@@ -21,6 +21,7 @@ namespace CoinBag.Droid
             base.RegisterDependencies(builder);
 	        builder.RegisterType<AndroidFileService>().As<IFileService>().SingleInstance();
             builder.RegisterType<AndroidNotificationService>().As<INotificationService>().SingleInstance();
+            builder.RegisterType<AndroidClipboardService>().As<IClipboardService>().SingleInstance();
         }
     }
 }
