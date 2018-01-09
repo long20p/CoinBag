@@ -66,8 +66,8 @@ namespace CoinBag.ViewModels
 		    var currentWallet = await walletService.GetCurrentWallet();
             var trans = currentWallet.Wallet.GetTransactions();
             var receivedCoins = trans.SelectMany(x => x.ReceivedCoins);
-	        var spendCoins = trans.SelectMany(x => x.SpentCoins);
-	        var spendableCoins = receivedCoins.Except(spendCoins);
+	        var spentCoinOutpoints = trans.SelectMany(x => x.SpentCoins).Select(c => c.Outpoint);
+	        var spendableCoins = receivedCoins.Where(x => !spentCoinOutpoints.Contains(x.Outpoint));
             var knownScriptPubKeys = currentWallet.Wallet.GetKnownScripts(true);
 
 	        var transaction = new Transaction();
